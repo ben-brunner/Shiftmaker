@@ -1,0 +1,202 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('shiftmakerbackend:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+// /!\ SOCKET.IO
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3001",
+    methods: ["GET", "POST"]
+  }
+});
+
+let voteCountImg1 = 0;
+let voteCountImg2 = 0;
+let voteCountImg3 = 0;
+let voteCountImg4 = 0;
+let voteCountImg5 = 0;
+let voteCountImg6 = 0;
+let voteCountImg7 = 0;
+let voteCountImg8 = 0;
+let voteCountImg9 = 0;
+let voteCountImg10 = 0;
+let voteCountImg11 = 0;
+let voteCountImg12 = 0;
+let voteCountImg13 = 0;
+let voteCountImg14 = 0;
+
+let titreDuMur;
+
+io.on('connection', (socket) => {
+
+  socket.on('getCounts', function() {
+      io.emit('counts', voteCountImg1, voteCountImg2, voteCountImg3, voteCountImg4,voteCountImg5, voteCountImg6, voteCountImg7, voteCountImg8, voteCountImg9, voteCountImg10, voteCountImg11, voteCountImg12, voteCountImg13, voteCountImg14);
+  });
+
+  socket.on('titreMur', function(titre) {
+    titreDuMur = titre;
+  });
+  
+  socket.on('TitreMurParticipant', function() {
+    io.emit('titre', titreDuMur);
+  });
+
+  socket.on('IncrementImg1', function() {
+      voteCountImg1++;
+      io.emit('countImg1', voteCountImg1);
+  });
+
+  socket.on('IncrementImg2', function() {
+      voteCountImg2++;
+      io.emit('countImg2', voteCountImg2);
+  });
+
+  socket.on('IncrementImg3', function() {
+      voteCountImg3++;
+      io.emit('countImg3', voteCountImg3);
+  });
+
+  socket.on('IncrementImg4', function() {
+      voteCountImg4++;
+      io.emit('countImg4', voteCountImg4);
+  });
+
+  socket.on('IncrementImg5', function() {
+      voteCountImg5++;
+      io.emit('countImg5', voteCountImg5);
+  });
+
+  socket.on('IncrementImg6', function() {
+      voteCountImg6++;
+      io.emit('countImg6', voteCountImg6);
+  });
+
+  socket.on('IncrementImg7', function() {
+      voteCountImg7++;
+      io.emit('countImg7', voteCountImg7);
+  });
+
+  socket.on('IncrementImg8', function() {
+      voteCountImg8++;
+      io.emit('countImg8', voteCountImg8);
+  });
+
+  socket.on('IncrementImg9', function() {
+      voteCountImg9++;
+      io.emit('countImg9', voteCountImg9);
+  });
+
+  socket.on('IncrementImg10', function() {
+      voteCountImg10++;
+      io.emit('countImg10', voteCountImg10);
+  });
+
+  socket.on('IncrementImg11', function() {
+      voteCountImg11++;
+      io.emit('countImg11', voteCountImg11);
+  });
+
+  socket.on('IncrementImg12', function() {
+      voteCountImg12++;
+      io.emit('countImg12', voteCountImg12);
+    });
+
+  socket.on('IncrementImg13', function() {
+      voteCountImg13++;
+      io.emit('countImg13', voteCountImg13);
+  });
+
+  socket.on('IncrementImg14', function() {
+      voteCountImg14++;
+      io.emit('countImg14', voteCountImg14);
+  });
+});
+
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
